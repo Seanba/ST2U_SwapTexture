@@ -16,15 +16,35 @@ But with a bit of work we can still achieve what we want.
 
 ## How to swap out a texture for a layer with SuperTiled2Unity
 
-This tutorial uses the `desert` example that is installed with the [Tiled Map Editor](https://www.mapeditor.org/)
+This tutorial uses the `desert` example that is installed with the [Tiled Map Editor](https://www.mapeditor.org/).
 
 ![desert](readme-images/desert-example.png)
 
 ### Step 1: Disable sprite atlasing on the imported tileset (`*.tsx`) file
 
-Note: Seams!
+By default the desert.tsx tileset will be imported with sprite atlasing enabled. We need this disabled so that texture coordinates between our different textures match.
+
+![disable sprite atlas](readme-images/disable-sprite-atlas.png)
+
+**Note that with sprite atlasing disabled we're going to see seams!**
+
+![seams](readme-images/seams.png)
+
+In order to fix this we have to add the add the borders *by hand* that sprite atlasing would have taken care for us automatically.
+
+It only takes a couple of minutes to modify your tileset this way. For this example each 32x32 tile has a 1 pixel border added around it. The border "copies" the pixel that came before it.
+
+![32x32](readme-images/tile-32.png)
+
+![34x34](readme-images/tile-34.png)
+
+> You can read more about padding this way on my [Tiled2Unity github page here](https://github.com/Seanba/Tiled2Unity/blob/master/doc/fixing-seams.md#pad-your-tiles---the-best-way-to-get-rid-of-seams-forever).
 
 ### Step 2: Use a custom shader and material that samples from different textures
+
+We don't actually "swap" a texture but instead have a custom material that is aware of what textures we'll be swapping in realtime.
+
+For this example we treat the original texture as a "summer tileset" and another texture as a "winter tileset".
 
 ### Step 3: Use `Material Matchings` to have a given Tiled layer use our specialized material
 
