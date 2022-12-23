@@ -30,7 +30,7 @@ By default the `desert.tsx` tileset will be imported with sprite atlasing enable
 
 ![seams](readme-images/seams.png)
 
-In order to fix this we have to add the add the borders *by hand* that sprite atlasing would have taken care for us automatically.
+In order to fix this we have to add borders *by hand* that sprite atlasing would have taken care for us automatically.
 
 It only takes a couple of minutes to modify your tileset this way. For this example each 32x32 tile has a 1 pixel border added around it. The border "copies" the pixel that came before it.
 
@@ -49,7 +49,7 @@ For this example we treat the original texture as a "summer tileset" and another
 ![cusotm material](readme-images/custom-material.png)
 
 
-Our material uses a custom shader that samples the summer or winter texture based on the value of the `_UseSummerTexture` shader global variable (see `seasons-shader.shader`).
+Our material uses a custom shader that samples the summer or winter texture based on the value of the `_UseSummerTexture` global shader variable (see `seasons-shader.shader`).
 
 ```text
 float4 SeasonFrag(v2f i) : SV_Target
