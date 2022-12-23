@@ -8,7 +8,7 @@ Unity fights us on this mainly because modern 3D engines can have a lot of seams
 
 Unity 2018.1 added the [Sprite Atlas](https://docs.unity3d.com/2018.1/Documentation/Manual/class-SpriteAtlas.html) asset to resolve issues with seams. This is a helpful way to have Unity automatically add borders to your tiles so we no longer worry about mathematical precision with texture samplers.
 
-**However!** This convenience copies our tiles into texture resources we don't have control over. Further, we have no idea *where* on the sprite altas our tiles are placed.
+**However!** This convenience copies our tiles into texture resources we don't have control over. Further, we have no idea *where* on the sprite altas (i.e. the texture coordinates) our tiles are placed.
 
 **Long story short**: Sprite atlases rob us of the ability to simply swap out textures in our tiled map layers.
 
@@ -22,7 +22,7 @@ This tutorial uses the `desert` example that is installed with the [Tiled Map Ed
 
 ### Step 1: Disable sprite atlasing on the imported tileset (`*.tsx`) file
 
-By default the desert.tsx tileset will be imported with sprite atlasing enabled. We need this disabled so that texture coordinates between our different textures match.
+By default the `desert.tsx` tileset will be imported with sprite atlasing enabled. We need this disabled that so that the texture coordinates between our different textures match.
 
 ![disable sprite atlas](readme-images/disable-sprite-atlas.png)
 
