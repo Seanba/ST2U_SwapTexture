@@ -42,10 +42,71 @@ It only takes a couple of minutes to modify your tileset this way. For this exam
 
 ### Step 2: Use a custom shader and material that samples from different textures
 
-We don't actually "swap" a texture but instead have a custom material that is aware of what textures we'll be swapping in realtime.
+We don't actually "swap" a texture but instead have a custom material (`SeasonsMaterial.mat`) that is aware of the textures we're using.
 
 For this example we treat the original texture as a "summer tileset" and another texture as a "winter tileset".
 
+![cusotm material](readme-images/custom-material.png)
+
+
+Our material uses a custom shader that samples the summer or winter texture based on the value of the `_UseSummerTexture` shader global variable (see `seasons-shader.shader`).
+
+```text
+float4 SeasonFrag(v2f i) : SV_Target
+{
+    float4 color = float4(0, 0, 0, 1);
+
+    if (_UseSummerTexture == 1.0)
+    {
+        color = tex2D(_SummerTex, i.uv);
+    }
+    else
+    {
+        color = tex2D(_WinterTex, i.uv);
+    }
+
+    return color;
+}
+```
+
 ### Step 3: Use `Material Matchings` to have a given Tiled layer use our specialized material
 
+We need a way to have our imported map use this specialized material. There's a couple of ways to achieve this but the simplest solution is to use the material matching feature in SuperTiled2Unity.
+
+Material matching simply matches a layer name to a material. We are going to make it so that any layer named `SeasonsLayer` in our Tiled map uses the `SeasonsMaterial` material.
+
+![tiled layer](readme-images/matching-tiled.png)
+![matching materials](readme-images/matching-unity.png)
+
 ### Step 4: Have a custom component swap the textures in realtime
+
+All that is left to do now is have some mechanism in place to set the global shader variable that controls the season at rutime. `SeasonManager.cs` simply toggles between summer and winter over time.
+
+```cs
+    private void Update()
+    {
+        m_Timer += Time.deltaTime;
+        if (m_Timer >= m_SeasonLength)
+        {
+            m_UseSummerTexture = !m_UseSummerTexture;
+            m_Timer = 0;
+            UpdateSeason();
+        }
+    }
+
+    private void UpdateSeason()
+    {
+        if (m_UseSummerTexture)
+        {
+            Shader.SetGlobalFloat("_UseSummerTexture", 1.0f);
+        }
+        else
+        {
+            Shader.SetGlobalFloat("_UseSummerTexture", 0.0f);
+        }
+    }
+```
+
+When we press play we can see the "texture swapping" in action.
+
+![swapping textures](readme-images/swap-texture.gif)
